@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>Earthquake Map</title>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
     <script src="https://d3js.org/d3-array.v2.min.js"></script>
     <script src="resources/js/d3-tip.js"></script>
@@ -28,21 +26,21 @@
         <li class="nav-item">
             <a class="nav-link" href="#intro">Intro</a>
         </li><li class="nav-item">
-            <a class="nav-link" href="#map-container">Section 1</a>
-        </li>
         <li class="nav-item">
-            <a class="nav-link" href="#map-barchart">Section 2</a>
-        </li>
+            <a class="nav-link" href="#ritcher">How to measure?</a>
+        </li><li class="nav-item">
         <li class="nav-item">
-            <a class="nav-link" href="#section3">Section 3</a>
-        </li>
+            <a class="nav-link" href="#worst_earthquakes">Worst Earthquakes</a>
+
+
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                Section 4
+                Explore on your own
             </a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="#section41">Link 1</a>
-                <a class="dropdown-item" href="#section42">Link 2</a>
+                <a class="dropdown-item" href="#map-barchart">Most Frequent Earthquakes</a>
+                <a class="dropdown-item" href="#section42">Depth and Magnitude</a>
+                <a class="dropdown-item" href="#map-container">Locate on Earth</a>
             </div>
         </li>
     </ul>
@@ -61,6 +59,16 @@
         background-repeat: no-repeat;
         background-size: cover;
         width: 1392px;
+    }
+
+
+    .ritcher {
+        background-image: url(resources/images/earthquake-magnitude.webp);
+        height: 961px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 1426px;
     }
 
     svg {
@@ -170,13 +178,24 @@
     /**
     Image
      */
-    img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 50%;
+   .worst_earth {
+       width: 100%;
     }
 
+    .sumatra {
+        width: 120%;
+        height:100%;
+    }
+    .japan {
+        width: 120%;
+        height:100%;
+    }
+    .custom-padding {
+        padding-top: 200px;
+    }
+    .justify-content-center {
+        margin-left: 50px;
+    }
 
 
 </style>
@@ -189,7 +208,8 @@
                 <!--Grid column-->
                 <div class="col-md-6 white-text text-center text-md-left mt-xl-5 mb-5 wow fadeInLeft" data-wow-delay="0.3s">
                     <h1 class="h1-responsive font-weight-bold mt-sm-5">A Story of tremors</h1>
-                    <h2>Earthquakes around the world from 1990-2013</h2>
+                    <h2>Earthquakes around the world
+                             (2000-2015)</h2>
                 </div>
 
             </div>
@@ -198,40 +218,123 @@
         <!-- Content -->
     </div>
 </div>
+<div id="ritcher" class="container-fluid  bg-dark text-white" style="padding-top:70px;padding-bottom:70px">
+    <div class="mask rgba-gradient align-items-center">
+        <!-- Content -->
+        <div class="container">
+            <!--Grid row-->
+            <div class="row">
+                <!--Grid column-->
+                <div class="col-md-4 white-text text-center text-md-left mt-xl-5 mb-5 wow fadeInLeft" data-wow-delay="0.3s">
+                    <h1 class="h1-responsive font-weight-bold mt-sm-5">How to measure the Earthquake</h1>
 
-<div id="map-container" class="container-fluid bg-light text-black" style="padding-top:70px;padding-bottom:70px">
-    <h1>Section 1</h1>
-    <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
-    <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
-</div>
-<div id="map-barchart" class="container-fluid bg-dark text-white" style="padding-top:70px;padding-bottom:70px">
-    <h1>Section 2</h1>
-    <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
-    <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
-</div>
-<div id="section3" class="container-fluid bg-light text-black" style="padding-top:70px;padding-bottom:70px">
-    <h1>Section 3</h1>
+                    <p class="font-weight-light">The first practical scale for measuring earthquakes was developed by geologist
+                        Charles Richter at the California Institute of Technology in the 1930s,
+                        and the scale that most scientists use today still bears his name.
+                    </p>
+                    <p class="font-weight-light">
+                    <div class="font-weight-bold"> The Richter scale,</div> denoted by a number called the "magnitude",
+                        is the most common way to measure the intensity of earthquake.
+                        This quantity, which can be read off a seismograph, reflects the amount by which the earth's crust shifts.
 
-    <p>Try to scroll this <s></s>ection and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
-    <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
-    <img id="mag-by-year" src="resources/images/MagByYear.png" class="img-responsive" alt="Cinque Terre">
+                    </p>
+                    <p class="font-weight-light">The energy released by an earthquake increases at an even steeper rate,
+                        going up by a factor of 32 for each one-point increase in magnitude.
+                    </p>
+                    <p class="font-weight-light">
+                        Therefore, a quake with magnitude between 2 and 3 is the lowest normally perceptible to humans.
+                        A magnitude 5 quake is considered moderate
+                    </p>
+                    <p>
+                        An earthquake of magnitude 6 or higher is considered major.
+
+                        The largest earthquakes in history have been of about magnitude 9.
+                    </p>
+                    <br/>
+                    <p class="font-weight-bold font-italic text-xl-left">
+                        Major earthquakes release far more energy than any man-made explosion.
+                        The 1906 San Francisco earthquake, with a magnitude of 8.3,
+                        was approximately one million times as powerful as the atomic bomb dropped on Hiroshima
+                    </p>
+                </div>
+                <div class="col-md-8 white-text text-center text-md-left mt-xl-5 mb-5 wow fadeInLeft ritcher">
+
+                </div>
+
+            </div>
+            <!--Grid row-->
+        </div>
+        <!-- Content -->
+    </div>
 </div>
-<div id="section41" class="container-fluid bg-secondary" style="padding-top:70px;padding-bottom:70px">
-    <h1>Section 4 Submenu 1</h1>
-    <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
-    <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
+<div id="worst_earthquakes" class="container-fluid bg-light text-black" style="padding-top:70px;padding-bottom:70px">
+    <h1>Worst Earthquakes</h1>
+
+    <div class="container">
+        <div class="row">
+                <img id="worst_earth" src="resources/images/worst_earthquakes.png" class="img-responsive worst_earth" alt="Worst Earthquakes">
+        </div>
+
+        <!--Grid row-->
+        <div class="row">
+            <br/>
+            <br/>
+            <br/>
+        </div>
+        <div class="row">
+
+            <!--Grid column-->
+
+
+            <div class="col-md-4" data-wow-delay="0.3s">
+                <img id="2004_Sumatra" src="resources/images/sumatra_destruction.jpg" class="img-responsive sumatra" alt="Destruction in Sumatra">
+                <p>Village near the coast of Sumatra</p>
+            </div>
+            <div class="col-md-2" data-wow-delay="0.3s">
+            </div>
+            <div class="col-md-6">
+                <img id="2011_Japan" src="resources/images/Fukushima7_2011.jpeg" class="img-responsive japan" alt="Chronology of Events in Japan">
+                <p>A KiHa 40 Train washed away uphill from Onagawa Station</p>
+            </div>
+
+        </div>
+        <!--Grid row-->
+    </div>
+</div>
+
+<div  class="container-fluid bg-dark text-white" style="padding-top:70px;padding-bottom:70px">
+    <h1>Most Frequent Earthquakes</h1>
+    <div class="container">
+
+        <div class="row">
+
+            <!--Grid column-->
+
+
+            <div class="col-md-4" data-wow-delay="0.3s">
+                <h3 class="custom-padding">Indonesia and Japan are the countries where Earthquakes hit the most.  </h3>
+                <p>From 2000 to 2015, Indonesia has been hit 257 times and Japan 203 times.</p>
+                <br/>
+                <p class="font-italic">Hover on the pie chart to know more.</p>
+            </div>
+            <div id="map-barchart" class="col-md-6">
+            </div>
+
+        </div>
+        <!--Grid row-->
+    </div>
 </div>
 <div id="section42" class="container-fluid bg-light" style="padding-top:70px;padding-bottom:70px">
-    <h1>Section 4 Submenu 2</h1>
-    <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
-    <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
+    <h1>Depth and Magnitude</h1>
+    <p>Use brushing and cross filtering to find any correlation between depth and magnitudes of earthquakes.
+        Did you find discover something?
+    </p>
     <div class='container' id='main-container'>
         <div class='content'>
             <div class='container' style='font: 12px sans-serif;'>
 
                 <div class='row'>
                     <div class='span12'>
-                        <h3>Earthquakes</h3>
                         <div class='row'>
                             <div class='pie-graph span6' id='dc-magnitude-chart'>
                                 <h4>Events by Magnitude</h4>
@@ -239,7 +342,18 @@
                             <div class='pie-graph span6' id='dc-depth-chart'>
                                 <h4>Events by Depth (km)</h4>
                             </div>
+
                         </div>
+                    </div>
+                    <div class="span12">
+                        <div class='row'>
+                            <div class='pie-graph span6 ml-4'>
+                                <p>X axis is Ritcher's scale and
+                                    Y axis is the number of Earthquakes.</p>
+                            </div>
+                            <div class='pie-graph span6 ml-4 justify-content-center' >
+                                <p class="ml-2">X axis is depth in KMs and Y axis is the number of Earthquakes.</p>
+                            </div>
                     </div>
                 </div>
 
@@ -247,6 +361,13 @@
         </div>
     </div>
 </div>
+
+<div id="map-container" class=" container-fluid bg-dark text-white" style="padding-top:70px;padding-bottom:70px">
+    <h1>Earthquakes (2000-2015) round the Globe</h1>
+    <p>Hover on each of the circle to find the exact location and magnitude of an Earthquake</p>
+</div>
+
+<
 
 <script>
     var earthquake_data;
@@ -462,8 +583,8 @@
          ***************************************/
 
         // Magnitide Bar Graph Summed
-        magnitudeChart.width(480)
-            .height(150)
+        magnitudeChart.width(500)
+            .height(400)
             .margins({top: 10, right: 10, bottom: 20, left: 40})
             .dimension(magValue)								// the values across the x axis
             .group(magValueGroupSum)							// the values on the y axis
@@ -475,8 +596,8 @@
             .xAxis().tickFormat(function(v) {return v;});
 
         // Depth bar graph
-        depthChart.width(480)
-            .height(150)
+        depthChart.width(500)
+            .height(400)
             .margins({top: 10, right: 10, bottom: 20, left: 40})
             .dimension(depthValue)
             .group(depthValueGroup)
