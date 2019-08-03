@@ -15,6 +15,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="dc.css" rel="stylesheet" type="text/css">
+    <script src='crossfilter.js' type='text/javascript'></script>
+    <script src='dc.js' type='text/javascript'></script>
 
 </head>
 <body data-spy="scroll" data-target=".navbar" data-offset="50">
@@ -48,7 +51,7 @@
     }
 
     svg {
-        background-color: #111;
+        /*background-color: #111;*/
         cursor: pointer;
     }
 
@@ -187,10 +190,31 @@
     <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
     <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
 </div>
-<div id="section42" class="container-fluid bg-info" style="padding-top:70px;padding-bottom:70px">
+<div id="section42" class="container-fluid bg-light" style="padding-top:70px;padding-bottom:70px">
     <h1>Section 4 Submenu 2</h1>
     <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
     <p>Try to scroll this section and look at the navigation bar while scrolling! Try to scroll this section and look at the navigation bar while scrolling!</p>
+    <div class='container' id='main-container'>
+        <div class='content'>
+            <div class='container' style='font: 12px sans-serif;'>
+
+                <div class='row'>
+                    <div class='span12'>
+                        <h3>Earthquakes</h3>
+                        <div class='row'>
+                            <div class='pie-graph span6' id='dc-magnitude-chart'>
+                                <h4>Events by Magnitude</h4>
+                            </div>
+                            <div class='pie-graph span6' id='dc-depth-chart'>
+                                <h4>Events by Depth (km)</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -201,7 +225,7 @@
 
     // Create a selection for the container div and append the svg element
     var div = d3.select('#map-container'),
-        svg = div.append('svg');
+        svg = div.append('svg').style("cursor","pointer");
 
     svg.append('g').classed('map', true);
     svg.append('g').classed('dots', true);
@@ -248,6 +272,9 @@
         land.attr('d', pathGenerator);
         land.exit().remove();
     });
+
+
+
 
 
     // Load the Earthquake data
@@ -334,6 +361,108 @@
         earthquake_data = data;
 
     });
+
+    /**********************************
+     * Step0: Load data from json file *
+     **********************************/
+
+// load data from a csv file
+    d3.csv("earthquakes.csv", function (data) {
+
+        // format our data
+        var dtgFormat = d3.time.format("%Y-%m-%dT%H:%M:%S");
+
+        data.forEach(function(d) {
+            d.dtg   = dtgFormat.parse(d.time.substr(0,19));
+            d.lat   = +d.latitude;
+            d.long  = +d.longitude;
+            d.mag   = d3.round(+d.mag,1);
+            d.depth = d3.round(+d.depth,0);
+        });
+
+        /******************************************************
+         * Step1: Create the dc.js chart objects & ling to div *
+         ******************************************************/
+
+        var magnitudeChart = dc.barChart("#dc-magnitude-chart");
+        var depthChart = dc.barChart("#dc-depth-chart");
+
+        /****************************************
+         * 	Run the data through crossfilter    *
+         ****************************************/
+
+        var facts = crossfilter(data);  // Gets our 'facts' into crossfilter
+
+        /******************************************************
+         * Create the Dimensions                               *
+         * A dimension is something to group or filter by.     *
+         * Crossfilter can filter by exact value, or by range. *
+         ******************************************************/
+
+            // for Magnitude
+        var magValue = facts.dimension(function (d) {
+                return d.mag;       // group or filter by magnitude
+            });
+        var magValueGroupSum = magValue.group()
+            .reduceSum(function(d) { return d.mag; });	// sums the magnitudes per magnitude
+        var magValueGroupCount = magValue.group()
+            .reduceCount(function(d) { return d.mag; }) // counts the number of the facts by magnitude
+
+
+        // for Depth
+        var depthValue = facts.dimension(function (d) {
+            return d.depth;
+        });
+        var depthValueGroup = depthValue.group();
+
+        // define a daily volume Dimension
+        var volumeByDay = facts.dimension(function(d) {
+            return d3.time.hour(d.dtg);
+        });
+        // map/reduce to group sum
+        var volumeByDayGroup = volumeByDay.group()
+            .reduceCount(function(d) { return d.dtg; });
+
+        /***************************************
+         * 	Step4: Create the Visualisations   *
+         ***************************************/
+
+        // Magnitide Bar Graph Summed
+        magnitudeChart.width(480)
+            .height(150)
+            .margins({top: 10, right: 10, bottom: 20, left: 40})
+            .dimension(magValue)								// the values across the x axis
+            .group(magValueGroupSum)							// the values on the y axis
+            .transitionDuration(500)
+            .centerBar(true)
+            .gap(56)                                            // bar width Keep increasing to get right then back off.
+            .x(d3.scale.linear().domain([0.5, 7.5]))
+            .elasticY(true)
+            .xAxis().tickFormat(function(v) {return v;});
+
+        // Depth bar graph
+        depthChart.width(480)
+            .height(150)
+            .margins({top: 10, right: 10, bottom: 20, left: 40})
+            .dimension(depthValue)
+            .group(depthValueGroup)
+            .transitionDuration(500)
+            .centerBar(true)
+            .gap(1)                    // bar width Keep increasing to get right then back off.
+            .x(d3.scale.linear().domain([0, 100]))
+            .elasticY(true)
+            .xAxis().tickFormat(function(v) {return v;});
+
+
+        /****************************
+         * Step6: Render the Charts  *
+         ****************************/
+
+        dc.renderAll();
+
+    });
+
+
 
 
 
